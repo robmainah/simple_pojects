@@ -47,7 +47,7 @@ def profile_login(request):
 
         if user is not None:
             login(request, user)
-            return redirect('reservations-index')
+            return redirect('reservations')
         else:
             messages.warning(request, 'Wrong credintials')
             return redirect('login')
