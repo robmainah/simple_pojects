@@ -41,16 +41,13 @@ def profile_login(request):
 
     if form.is_valid():
         email = form.cleaned_data.get('email')
-        # password = make_password(form.cleaned_data.get('password'))
         password = form.cleaned_data.get('password')
-        print(email)
-        print(password)
         
         user = authenticate(request, username=email, password=password)
 
         if user is not None:
             login(request, user)
-            return redirect('register')
+            return redirect('reservations-index')
         else:
             messages.warning(request, 'Wrong credintials')
             return redirect('login')
