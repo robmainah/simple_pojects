@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Room(models.Model):
     room_no = models.IntegerField(unique=True)
-    has_empty = models.BooleanField()
+    has_empty = models.BooleanField(default=True)
     amount = models.FloatField(default=0)
 
     def __str__(self) -> str:
