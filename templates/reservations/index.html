@@ -53,15 +53,39 @@
                             </table>
                         </div>
 
-                        <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-right">
-                                <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">»</a></li>
-                            </ul>
-                        </div>
+                        {% if reservations.has_other_pages %}
+                            <div class="card-footer clearfix">
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    {% if reservations.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ reservations.previous_page_number }}">«</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                                    {% endif %}
+
+                                    {% for page in reservations.paginator.page_range %}
+                                        {% if reservations.number == page %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#">{{ page }} <span class="sr-only">(current)</span></a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if reservations.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ reservations.next_page_number }}">»</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

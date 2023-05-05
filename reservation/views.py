@@ -1,15 +1,27 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Reservation, Room
 from .forms import AddReservationForm
 
 def index(request):
     if request.user.is_staff:
-        reservations = Reservation.objects.all()
+        reservations_list = Reservation.objects.all()
     else:
-        reservations = Reservation.objects.filter(user=request.user)
+        reservations_list = Reservation.objects.filter(user=request.user)
+
+    paginator = Paginator(reservations_list, 2)
+
+    page = request.GET.get('page', 1)
+
+    try:
+        reservations = paginator.page(page)
+    except PageNotAnInteger:
+        reservations = paginator.page(1)
+    except EmptyPage:
+        reservations = paginator.page(paginator.num_pages)
 
     return render(request, 'reservations/index.html', { 'reservations': reservations })
 
