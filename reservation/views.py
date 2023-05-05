@@ -8,12 +8,11 @@ from .forms import AddReservationForm
 
 def index(request):
     if request.user.is_staff:
-        reservations_list = Reservation.objects.all()
+        reservations_list = Reservation.objects.all().order_by('-created_at')
     else:
-        reservations_list = Reservation.objects.filter(user=request.user)
+        reservations_list = Reservation.objects.filter(user=request.user).order_by('-created_at')
 
     paginator = Paginator(reservations_list, 2)
-
     page = request.GET.get('page', 1)
 
     try:
