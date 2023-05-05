@@ -1,5 +1,7 @@
 {% load static %}
 
+{% load reservation_template_tags %}
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -14,19 +16,28 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item border-bottom border-info">
-                    <a href="{% url 'reservations' %}" class="nav-link active">
+                    <!-- {% with request.path|slugify as path %}
+                        {% if path == "reservations" %}
+                            <a href="{% url 'reservations' %}" class="nav-link active">
+                        {% else %}
+                                <a href="{% url 'reservations' %}" class="nav-link">
+                        {% endif %}
+                    {% endwith %} -->
+
+                    <a href="{% url 'reservations' %}" class="nav-link {% if request.path|starts_with:'/reservations/' %} active {% endif %}">
+                    
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Reservations</p>
                     </a>
                 </li>
                 <li class="nav-item border-bottom border-info">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {% if request.path|starts_with:'/payments/' %} active {% endif %}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Payments</p>
                     </a>
                 </li>
                 <li class="nav-item border-bottom border-info">
-                    <a href="#" class="nav-link">
+                    <a href="{% url 'students' %}" class="nav-link {% if request.path|starts_with:'/users/students/' %} active {% endif %}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Students</p>
                     </a>
