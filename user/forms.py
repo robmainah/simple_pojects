@@ -69,7 +69,7 @@ class AddStudentForm(forms.ModelForm):
         if instance is not None:
             qs = qs.exclude(pk=instance.pk)
 
-        if qs.exists():
+        if qs.exists() and email != instance.user.email:
             raise forms.ValidationError('Email is already used')
         
         return email    

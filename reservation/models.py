@@ -13,7 +13,7 @@ class Room(models.Model):
 class Reservation(models.Model):
     user = models.ForeignKey(User, related_name='reservations', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='reservations', on_delete=models.CASCADE)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey(User, related_name='created_by', on_delete=models.CASCADE)
     updated_by = models.ForeignKey(User, related_name='updated_by', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -24,7 +24,6 @@ class Reservation(models.Model):
 
 class Payment(models.Model):
     reservation = models.ForeignKey(Reservation, related_name='payments', on_delete=models.CASCADE, null=True)
-    # room = models.ForeignKey(Room, related_name='payments', on_delete=models.CASCADE)
     amount = models.FloatField(default=0)
     balance = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

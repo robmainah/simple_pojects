@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -14,7 +14,7 @@ def index(request):
     else:
         reservations_list = Reservation.objects.filter(user=request.user).order_by('-created_at')
 
-    paginator = Paginator(reservations_list, 2)
+    paginator = Paginator(reservations_list, 5)
     page = request.GET.get('page', 1)
 
     try:
@@ -44,11 +44,9 @@ def add_reservation(request):
             return redirect('reservations')
         else:
             messages.warning(request, 'Please fill all fields')
-
             context['form'] = request.POST
 
-            return render(request, 'reservations/add_reservation.html', { 'context': context })
-
+            return render(request, 'reservations/reservation_form.html', { 'context': context })
     else:
         context['form'] = {
             'user': 0,
@@ -56,7 +54,47 @@ def add_reservation(request):
             'is_active': '',
         }
 
-        return render(request, 'reservations/add_reservation.html', { 'context': context })
+        return render(request, 'reservations/reservation_form.html', { 'context': context })
+
+@login_required
+def edit_reservation(request, pk):
+    reservation = get_object_or_404(Reservation, pk=pk)
+    
+    rooms = Room.objects.all()
+    students = User.objects.filter(is_staff=False)
+
+    context = {
+        'rooms': rooms,
+        'students': students,
+        'id': reservation.id
+    }
+
+    if request.method == 'POST':
+        form = AddReservationForm(request.POST, instance=reservation)
+
+        if form.is_valid():
+            form.save(request.user)
+            return redirect('reservations')
+        else:
+            messages.warning(request, 'Please fill all fields')
+            context['form'] = request.POST
+            
+            return render(request, 'reservations/reservation_form.html', { 'context': context })
+    else:
+        context['form'] = {
+            'user': reservation.user.id,
+            'room': reservation.room.id,
+            'is_active': reservation.is_active,
+        }
+
+        return render(request, 'reservations/reservation_form.html', { 'context': context })
+
+
+@login_required
+def delete_reservation(request, pk):
+    get_object_or_404(Reservation, pk=pk).delete()
+    return redirect('reservations')
+
 
 @login_required
 def payments(request):
@@ -81,7 +119,7 @@ def payments(request):
 def add_payment(request):
     if request.method == 'GET':
         form = AddPaymentForm()
-        return render(request, 'reservations/add_payment.html', { 'form' : form })    
+        return render(request, 'reservations/payment_form.html', { 'form' : form })    
     
     form = AddPaymentForm(request.POST)
 
@@ -90,4 +128,28 @@ def add_payment(request):
         form = AddPaymentForm()
         return redirect('payments')
 
-    return render(request, 'reservations/add_payment.html', { 'form' : form })
+    return render(request, 'reservations/payment_form.html', { 'form' : form })
+
+@login_required
+def edit_payment(request, pk):
+    payment = get_object_or_404(Payment, pk=pk)
+
+    if request.method == 'GET':
+        form = AddPaymentForm(instance=payment)
+        return render(request, 'reservations/payment_form.html', { 'form' : form, 'id' : payment.pk })    
+    
+    form = AddPaymentForm(request.POST, instance=payment)
+
+    if form.is_valid():
+        form.save()
+        form = AddPaymentForm()
+        return redirect('payments')
+
+    return render(request, 'reservations/payment_form.html', { 'form' : form })
+
+@login_required
+def delete_payment(request, pk):
+    payment = get_object_or_404(Payment, pk=pk)
+    payment.delete()
+
+    return redirect('payments')

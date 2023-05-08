@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
@@ -8,6 +8,8 @@ from django.utils.crypto import get_random_string
 from django.contrib.auth.decorators import login_required
 
 from .forms import RegistrationForm, LoginForm, AddStudentForm
+
+from .models import Profile
 
 def register(request):
     if request.method == 'POST':
@@ -80,7 +82,7 @@ def add_student(request):
     if request.method == 'GET':
         form = AddStudentForm()
 
-        return render(request, 'user/add_student.html', { 'form': form })
+        return render(request, 'user/student_form.html', { 'form': form })
     else:
         form = AddStudentForm(request.POST)
 
@@ -104,4 +106,44 @@ def add_student(request):
             messages.success(request, 'Student created successfully')
             return redirect('students')
 
-        return render(request, 'user/add_student.html', { 'form': form })
+        return render(request, 'user/student_form.html', { 'form': form })
+
+@login_required
+def edit_student(request, pk):
+    student = get_object_or_404(Profile, pk=pk)
+
+    if request.method == 'GET':
+        form = AddStudentForm(instance=student)
+        form.fields['first_name'].initial = student.user.first_name
+        form.fields['last_name'].initial = student.user.last_name
+        form.fields['email'].initial = student.user.email
+
+        return render(request, 'user/student_form.html', { 'form': form, 'id' : student.id })
+    else:
+        form = AddStudentForm(request.POST, instance=student)            
+
+        if form.is_valid():
+            data = {
+                'username': form.cleaned_data.get('email'),
+                'email': form.cleaned_data.get('email'),
+                'first_name': form.cleaned_data.get('first_name'),
+                'last_name': form.cleaned_data.get('last_name'),
+            }
+
+            user = User.objects.filter(pk=student.user.pk)
+            user.update(**data)
+
+            form.save(user.first())
+            form = AddStudentForm()
+
+            return redirect('students')
+
+        return render(request, 'user/student_form.html', { 'form': form, 'id' : student.id })
+
+
+@login_required
+def delete_student(request, pk):
+    student = get_object_or_404(Profile, pk=pk)
+    student.user.delete()
+
+    return redirect('students')

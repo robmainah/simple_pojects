@@ -15,7 +15,7 @@
                         <li class="breadcrumb-item">
                             <a href="{% url 'students' %}">Students</a>
                         </li>
-                        <li class="breadcrumb-item active">New</li>
+                        <li class="breadcrumb-item active">{% if id %} Edit {% else %} Add {% endif %}</li>
                     </ol>
                 </div>
             </div>
@@ -28,8 +28,7 @@
                 <div class="col-lg-12">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h5 class="m-0 d-inline">Add Student</h5>
-                            <a href="{% url 'add_student' %}" class="btn btn-primary btn-sm float-right">Add Student</a>
+                            <h5 class="m-0 d-inline">{% if id %} Edit {% else %} Add {% endif %} Student</h5>
                         </div>
                         <div class="card-body">
                             {% if messages %}
@@ -40,7 +39,11 @@
                                 {% endfor %}
                             {% endif %}
 
+                            {% if id %}
+                            <form method="post" action="{% url 'edit_student' id %}">
+                            {% else %}
                             <form method="post" action="{% url 'add_student' %}">
+                            {% endif %}
                                 {% csrf_token %}
 
                                 {{ form|crispy }}

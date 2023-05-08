@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from reservation.views import payments, add_payment
+from reservation import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('user.urls')),
     path('reservations/', include('reservation.urls')),
-    path('payments/', payments, name='payments'),
-    path('payments/new/', add_payment, name='add_payment'),
+    path('payments/', views.payments, name='payments'),
+    path('payments/new/', views.add_payment, name='add_payment'),
+    path('payments/edit/<int:pk>/', views.edit_payment, name='edit_payment'),
+    path('payments/delete/<int:pk>/', views.delete_payment, name='delete_payment'),
 ]

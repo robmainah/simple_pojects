@@ -11,9 +11,9 @@
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                     <li class="breadcrumb-item">
-                        <a href="{% url 'reservations' %}"></a>
+                        <a href="{% url 'reservations' %}">Reservations</a>
                     </li>
-                    <li class="breadcrumb-item active">New</li>
+                    <li class="breadcrumb-item active">{% if context.id %} Edit {% else %} Add {% endif %}</li>
                 </ol>
             </div>
         </div>
@@ -26,7 +26,7 @@
             <div class="col-lg-12">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h5 class="m-0">Add Reservation</h5>
+                        <h5 class="m-0">{% if context.id %} Edit {% else %} Add {% endif %} Reservation</h5>
                     </div>
                     <div class="card-body">
                         {% if messages %}
@@ -60,7 +60,7 @@
                                 <select class="custom-select rounded-0" name="room">
                                         <option value="" disabled selected>Select Room</option>
                                     {% for room in context.rooms %}
-                                        <option {% if context.form.room == room.id|slugify %} selected {% endif %} value="{{ room.id }}">Room {{ room.room_no }}</option>
+                                        <option {% if context.form.room|add:'0' == room.id %} selected {% endif %} value="{{ room.id }}">Room {{ room.room_no }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -69,13 +69,13 @@
                                 <label for="Room">Status</label>
                                 <br>
                                 <div class="icheck-primary d-inline">
-                                    <input type="radio" id="Active" name="is_active" value="True">
+                                    <input type="radio" id="Active" name="is_active" value="True" {% if context.form.is_active == True %} checked {% endif %}>
                                     <label for="Active">Active</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="icheck-danger d-inline">
-                                    <input type="radio" id="Not Active" name="is_active" value="False" checked>
+                                    <input type="radio" id="Not Active" name="is_active" value="False" {% if context.form.is_active == False %} checked {% endif %}>
                                     <label for="Not Active">Not Active</label>
                                 </div>
                             </div>
