@@ -31,16 +31,17 @@ def register(request):
             messages.success(request, 'Registration successful')
             return redirect('login')    
     else:
-        if request.user is not None:
+        if request.user is not None and request.user == 'AnonymousUser':
             return redirect('reservations')
 
         form = RegistrationForm()
 
     return render(request, 'user/register.html', { 'form': form })
 
-def profile_login(request):
+def student_login(request):
     if request.method == 'GET':
-        if request.user is not None:
+        print(request.user)
+        if request.user is not None and request.user == 'AnonymousUser':
             return redirect('reservations')
         
         form = LoginForm()

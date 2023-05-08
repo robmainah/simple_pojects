@@ -24,8 +24,8 @@ class Reservation(models.Model):
 
 class Payment(models.Model):
     reservation = models.ForeignKey(Reservation, related_name='payments', on_delete=models.CASCADE, null=True)
-    amount = models.FloatField(default=0)
-    balance = models.FloatField(default=0)
+    amount = models.IntegerField(default=0)
+    balance = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:

@@ -18,4 +18,4 @@ class AddReservationForm(forms.ModelForm):
 class AddPaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
-        fields = '__all__'
+        fields = ['reservation', 'amount', 'balance']

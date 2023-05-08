@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from reservation import views
+from user.views import student_login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +28,5 @@ urlpatterns = [
     path('payments/new/', views.add_payment, name='add_payment'),
     path('payments/edit/<int:pk>/', views.edit_payment, name='edit_payment'),
     path('payments/delete/<int:pk>/', views.delete_payment, name='delete_payment'),
+    path('', views.all_reservations, name='main'),
 ]

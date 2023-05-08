@@ -8,7 +8,7 @@ from .models import Reservation, Room, Payment
 from .forms import AddReservationForm, AddPaymentForm
 
 @login_required
-def index(request):
+def all_reservations(request):
     if request.user.is_staff:
         reservations_list = Reservation.objects.all().order_by('-created_at')
     else:
@@ -119,6 +119,7 @@ def payments(request):
 def add_payment(request):
     if request.method == 'GET':
         form = AddPaymentForm()
+
         return render(request, 'reservations/payment_form.html', { 'form' : form })    
     
     form = AddPaymentForm(request.POST)
