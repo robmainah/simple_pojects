@@ -16,14 +16,6 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item border-bottom border-info">
-                    <!-- {% with request.path|slugify as path %}
-                        {% if path == "reservations" %}
-                            <a href="{% url 'reservations' %}" class="nav-link active">
-                        {% else %}
-                                <a href="{% url 'reservations' %}" class="nav-link">
-                        {% endif %}
-                    {% endwith %} -->
-
                     <a href="{% url 'reservations' %}" class="nav-link {% if request.path|starts_with:'/reservations/' %} active {% endif %}">
                     
                         <i class="nav-icon fas fa-tachometer-alt"></i>

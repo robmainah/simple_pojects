@@ -23,7 +23,7 @@ class Reservation(models.Model):
         return f'Reg No: {self.user.profile.registration_no} - Name: {self.user.first_name} {self.user.last_name}'
 
 class Payment(models.Model):
-    reservation = models.ForeignKey(Reservation, related_name='payments', on_delete=models.CASCADE, null=True)
+    reservation = models.ForeignKey(Reservation, related_name='payments', verbose_name='reservations', on_delete=models.CASCADE, null=True)
     amount = models.IntegerField(default=0)
     balance = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

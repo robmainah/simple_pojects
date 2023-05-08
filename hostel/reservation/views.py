@@ -120,6 +120,8 @@ def add_payment(request):
     if request.method == 'GET':
         form = AddPaymentForm()
 
+        form.fields['reservation'].queryset = Reservation.objects.filter(user = request.user)
+
         return render(request, 'reservations/payment_form.html', { 'form' : form })    
     
     form = AddPaymentForm(request.POST)
