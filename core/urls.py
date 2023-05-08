@@ -17,8 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from reservation.views import payments
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('user.urls')),
-    path('reservations/', include('reservation.urls')),
+    path('reservations/', include('reservation.urls')),    
+    path('payments/', payments, name='payments'),
 ]

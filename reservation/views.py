@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 
-from .models import Reservation, Room
+from .models import Reservation, Room, Payment
 from .forms import AddReservationForm
 
+@login_required
 def index(request):
     if request.user.is_staff:
         reservations_list = Reservation.objects.all().order_by('-created_at')
@@ -24,7 +26,7 @@ def index(request):
 
     return render(request, 'reservations/index.html', { 'reservations': reservations })
 
-
+@login_required
 def add_reservation(request):
     rooms = Room.objects.all()
     students = User.objects.filter(is_staff=False)
@@ -55,3 +57,26 @@ def add_reservation(request):
         }
 
         return render(request, 'reservations/form.html', { 'context': context })
+
+@login_required
+def payments(request):
+    if request.user.is_staff:
+        payments_list = Payment.objects.all().order_by('-created_at')
+    else:
+        payments_list = Payment.objects.filter(reservation__user=request.user).order_by('-created_at')
+
+    paginator = Paginator(payments_list, 10)
+    page = request.GET.get('page', 1)
+
+    try:
+        payments = paginator.page(page)
+    except PageNotAnInteger:
+        payments = paginator.page(1)
+    except EmptyPage:
+        payments = paginator.page(paginator.num_pages)
+
+    return render(request, 'reservations/payments.html', { 'payments': payments })
+
+@login_required
+def add_payment(request):
+    pass

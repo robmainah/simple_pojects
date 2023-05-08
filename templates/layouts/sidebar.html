@@ -31,17 +31,21 @@
                     </a>
                 </li>
                 <li class="nav-item border-bottom border-info">
-                    <a href="#" class="nav-link {% if request.path|starts_with:'/payments/' %} active {% endif %}">
+                    <a href="{% url 'payments' %}" class="nav-link {% if request.path|starts_with:'/payments/' %} active {% endif %}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Payments</p>
                     </a>
                 </li>
-                <li class="nav-item border-bottom border-info">
-                    <a href="{% url 'students' %}" class="nav-link {% if request.path|starts_with:'/users/students/' %} active {% endif %}">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>Students</p>
-                    </a>
-                </li>
+
+                {% if request.user.is_staff %}
+                    <li class="nav-item border-bottom border-info">
+                        <a href="{% url 'students' %}" class="nav-link {% if request.path|starts_with:'/users/students/' %} active {% endif %}">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Students</p>
+                        </a>
+                    </li>
+                {% endif %}
+                
                 <li class="nav-item border-bottom border-info">
                     <a href="{% url 'logout' %}" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>

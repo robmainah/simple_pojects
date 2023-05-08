@@ -5,12 +5,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Reservations</h1>
+                    <h1 class="m-0">Payments</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Reservations</li>
+                        <li class="breadcrumb-item active">Payments</li>
                     </ol>
                 </div>
             </div>
@@ -23,8 +23,8 @@
                 <div class="col-lg-12">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h5 class="m-0 d-inline">Reservations History</h5>
-                            <a href="{% url 'add_reservation' %}" class="btn btn-primary btn-sm float-right">Add Reservation</a>
+                            <h5 class="m-0 d-inline">Payments History</h5>
+                            <a href="{% url 'add_payment' %}" class="btn btn-primary btn-sm float-right">Add Payment</a>
                         </div>
                         <div class="card-body table-responsive">
                             <table class="table table-head-fixed table-bordered text-nowrap">
@@ -34,36 +34,40 @@
                                         <th>Student Name</th>
                                         <th>Registration No.</th>
                                         <th>Room</th>
-                                        <th>Active</th>
+                                        <th>Amount</th>
+                                        <th>Balance</th>
+                                        <th>Date Paid</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for reservation in reservations %}
+                                    {% for payment in payments %}
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
-                                            <td>{{ reservation.user.first_name }} {{ reservation.user.last_name }}</td>
-                                            <td>{{ reservation.user.profile.registration_no }}</td>
-                                            <td>{{ reservation.room.room_no }}</td>
-                                            <td>{{ reservation.is_active }}</td>
+                                            <td>{{ payment.reservation.user.first_name }} {{ payment.reservation.user.last_name }}</td>
+                                            <td>{{ payment.reservation.user.profile.registration_no }}</td>
+                                            <td>{{ payment.reservation.room.room_no }}</td>
+                                            <td>{{ payment.amount|floatformat }}</td>
+                                            <td>{{ payment.balance|floatformat }}</td>
+                                            <td>{{ payment.created_at|date:'Y-m-d' }}</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
                         </div>
 
-                        {% if reservations.has_other_pages %}
+                        {% if payments.has_other_pages %}
                             <div class="card-footer clearfix">
                                 <ul class="pagination pagination-sm m-0 float-right">
-                                    {% if reservations.has_previous %}
+                                    {% if payments.has_previous %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ reservations.previous_page_number }}">«</a>
+                                            <a class="page-link" href="?page={{ payments.previous_page_number }}">«</a>
                                         </li>
                                     {% else %}
                                         <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
                                     {% endif %}
 
-                                    {% for page in reservations.paginator.page_range %}
-                                        {% if reservations.number == page %}
+                                    {% for page in payments.paginator.page_range %}
+                                        {% if payments.number == page %}
                                             <li class="page-item disabled">
                                                 <a class="page-link" href="#">{{ page }} <span class="sr-only">(current)</span></a>
                                             </li>
@@ -74,9 +78,9 @@
                                         {% endif %}
                                     {% endfor %}
 
-                                    {% if reservations.has_next %}
+                                    {% if payments.has_next %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ reservations.next_page_number }}">»</a>
+                                            <a class="page-link" href="?page={{ payments.next_page_number }}">»</a>
                                         </li>
                                     {% else %}
                                         <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>

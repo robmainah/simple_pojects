@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.crypto import get_random_string
+from django.contrib.auth.decorators import login_required
 
 from .forms import RegistrationForm, LoginForm, AddStudentForm
 
@@ -28,12 +29,18 @@ def register(request):
             messages.success(request, 'Registration successful')
             return redirect('login')    
     else:
+        if request.user is not None:
+            return redirect('reservations')
+
         form = RegistrationForm()
 
     return render(request, 'user/register.html', { 'form': form })
 
 def profile_login(request):
     if request.method == 'GET':
+        if request.user is not None:
+            return redirect('reservations')
+        
         form = LoginForm()
         return render(request, 'user/login.html', { 'form': form })
 
@@ -52,7 +59,7 @@ def profile_login(request):
             messages.warning(request, 'Wrong credintials')
             return redirect('login')
  
-
+@login_required
 def students(request):
     students_list = User.objects.filter(is_staff=False).order_by('-date_joined')
 
@@ -68,7 +75,7 @@ def students(request):
 
     return render(request, 'user/all_students.html', { 'students': students })
 
-
+@login_required
 def add_student(request):
     if request.method == 'GET':
         form = AddStudentForm()
