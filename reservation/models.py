@@ -20,7 +20,7 @@ class Reservation(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return f'{self.room} - {self.user}'
+        return f'Reg No: {self.user.profile.registration_no} - Name: {self.user.first_name} {self.user.last_name}'
 
 class Payment(models.Model):
     reservation = models.ForeignKey(Reservation, related_name='payments', on_delete=models.CASCADE, null=True)

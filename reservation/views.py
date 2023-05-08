@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 
 from .models import Reservation, Room, Payment
-from .forms import AddReservationForm
+from .forms import AddReservationForm, AddPaymentForm
 
 @login_required
 def index(request):
@@ -47,7 +47,7 @@ def add_reservation(request):
 
             context['form'] = request.POST
 
-            return render(request, 'reservations/form.html', { 'context': context })
+            return render(request, 'reservations/add_reservation.html', { 'context': context })
 
     else:
         context['form'] = {
@@ -56,7 +56,7 @@ def add_reservation(request):
             'is_active': '',
         }
 
-        return render(request, 'reservations/form.html', { 'context': context })
+        return render(request, 'reservations/add_reservation.html', { 'context': context })
 
 @login_required
 def payments(request):
@@ -79,4 +79,15 @@ def payments(request):
 
 @login_required
 def add_payment(request):
-    pass
+    if request.method == 'GET':
+        form = AddPaymentForm()
+        return render(request, 'reservations/add_payment.html', { 'form' : form })    
+    
+    form = AddPaymentForm(request.POST)
+
+    if form.is_valid():
+        form.save()
+        form = AddPaymentForm()
+        return redirect('payments')
+
+    return render(request, 'reservations/add_payment.html', { 'form' : form })

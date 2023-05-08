@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Reservation
+from .models import Reservation, Payment
 
 class AddReservationForm(forms.ModelForm):
     class Meta:
@@ -13,3 +13,9 @@ class AddReservationForm(forms.ModelForm):
         instance.updated_by = user
 
         return super().save()
+
+
+class AddPaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = '__all__'
