@@ -1,0 +1,91 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Reservations</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'reservations' %}">Reservations</a>
+                    </li>
+                    <li class="breadcrumb-item active">{% if context.id %} Edit {% else %} Add {% endif %}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h5 class="m-0">{% if context.id %} Edit {% else %} Add {% endif %} Reservation</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form action="{% url 'add_reservation' %}" method="post">
+                            {% csrf_token %}
+
+                            {% if request.user.is_staff %}
+                                <div class="form-group">
+                                    <label for="Room">Student Reg No: - Name</label>
+                                    <select class="custom-select rounded-0" name="user">
+                                        <option value="" disabled selected>Select Student</option>
+                                        {% for student in context.students %}
+                                            <option {% if context.form.user|add:'0' == student.id %} selected {% endif %} value="{{ student.id }}">{{ student.profile.registration_no }} - Name: {{ student.first_name }} {{ student.last_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                            {% else %}
+                                <input type="hidden" name="user" value="{{ request.user.id }}">
+                            {% endif %}
+
+                            <div class="form-group">
+                                <label for="Room">Room</label>
+                                <select class="custom-select rounded-0" name="room">
+                                        <option value="" disabled selected>Select Room</option>
+                                    {% for room in context.rooms %}
+                                        <option {% if context.form.room|add:'0' == room.id %} selected {% endif %} value="{{ room.id }}">Room {{ room.room_no }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="Room">Status</label>
+                                <br>
+                                <div class="icheck-primary d-inline">
+                                    <input type="radio" id="Active" name="is_active" value="True" {% if context.form.is_active == True %} checked {% endif %}>
+                                    <label for="Active">Active</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="icheck-danger d-inline">
+                                    <input type="radio" id="Not Active" name="is_active" value="False" {% if context.form.is_active == False %} checked {% endif %}>
+                                    <label for="Not Active">Not Active</label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mt-3 float-right col-2">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
