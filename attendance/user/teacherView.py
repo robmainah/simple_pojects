@@ -88,8 +88,8 @@ def edit_teacher(request, pk):
 
 
 @login_required
-def delete_student(request, pk):
-    student = get_object_or_404(Profile, pk=pk)
-    student.user.delete()
+def delete_teacher(request, pk):
+    teacher = get_object_or_404(User, pk=pk)
+    teacher.delete()
 
-    return redirect('students')
+    return redirect('teachers')
