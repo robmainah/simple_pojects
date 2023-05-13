@@ -12,4 +12,4 @@ class Profile(models.Model):
         ordering = ['-created_at']
 
     def __str__(self) -> str:
-        return f'{self.user.first_name} {self.user.last_name} profile'
+        return f'{self.user.first_name} {self.user.last_name}'

@@ -31,9 +31,27 @@
 
                 {% if request.user.is_staff %}
                     <li class="nav-item border-bottom border-info">
+                        <a href="{% url 'student_classes' %}" class="nav-link {% if request.path|starts_with:'/student_classes/' %} active {% endif %}">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>Student Classes</p>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if request.user.is_staff %}
+                    <li class="nav-item border-bottom border-info">
                         <a href="{% url 'students' %}" class="nav-link {% if request.path|starts_with:'/users/students/' %} active {% endif %}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>Students</p>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if request.user.is_superuser %}
+                    <li class="nav-item border-bottom border-info">
+                        <a href="{% url 'teachers' %}" class="nav-link {% if request.path|starts_with:'/teachers/' %} active {% endif %}">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Teachers</p>
                         </a>
                     </li>
                 {% endif %}
@@ -47,11 +65,11 @@
                     </li>
                 {% endif %}
 
-                {% if request.user.is_superuser %}
+                {% if request.user.is_staff %}
                     <li class="nav-item border-bottom border-info">
-                        <a href="{% url 'teachers' %}" class="nav-link {% if request.path|starts_with:'/teachers/' %} active {% endif %}">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>Teachers</p>
+                        <a href="{% url 'attendances' %}" class="nav-link {% if request.path|starts_with:'/attendances/' %} active {% endif %}">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>Attendances</p>
                         </a>
                     </li>
                 {% endif %}

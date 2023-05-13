@@ -19,7 +19,7 @@ from django.urls import path, include
 
 from reservation import views
 from user import teacherView
-from attendance import subjectView
+from attendance import subjectView, studentClassView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,9 +36,16 @@ urlpatterns = [
     path('subjects/add_subject/', subjectView.add_subject, name='add_subject'),
     path('subjects/edit/<int:pk>/', subjectView.edit_subject, name='edit_subject'),
     path('subjects/delete/<int:pk>/', subjectView.delete_subject, name='delete_subject'),
+
+    path('student_classes/', studentClassView.student_classes, name='student_classes'),
+    path('student_classes/add/', studentClassView.add_student_class, name='add_student_class'),
+    path('student_classes/edit/<int:pk>/', studentClassView.edit_student_class, name='edit_student_class'),
+    path('student_classes/delete/<int:pk>/', studentClassView.delete_student_class, name='delete_student_class'),
     
     path('payments/new/', views.add_payment, name='add_payment'),
     path('payments/edit/<int:pk>/', views.edit_payment, name='edit_payment'),
     path('payments/delete/<int:pk>/', views.delete_payment, name='delete_payment'),
+
     path('', views.all_reservations, name='main'),
+    path('attendances/', include('attendance.urls'), name='main'),
 ]

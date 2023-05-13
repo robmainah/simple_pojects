@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
@@ -32,7 +31,6 @@ def student_login(request):
             login(request, user)
             return redirect('reservations')
         else:
-            messages.warning(request, 'Wrong credintials')
             return redirect('login')
  
 @login_required
@@ -77,7 +75,6 @@ def add_student(request):
             form.save(user)
             form = AddStudentForm()
 
-            messages.success(request, 'Student created successfully')
             return redirect('students')
 
         return render(request, 'user/student_form.html', { 'form': form })

@@ -21,12 +21,13 @@ def subjects(request):
     except EmptyPage:
         subjects = paginator.page(paginator.num_pages)
 
-    return render(request, 'attendances/all_subjects.html', { 'subjects': subjects })
+    return render(request, 'attendances/subjects.html', { 'subjects': subjects })
 
 @login_required
 def add_subject(request):
     if request.method == 'GET':
         form = SubjectForm()
+        form.fields['teacher'].queryset = User.objects.filter(is_staff=True, is_superuser=False)
 
         return render(request, 'attendances/subject_form.html', { 'form': form })
     else:
