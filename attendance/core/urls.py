@@ -19,12 +19,18 @@ from django.urls import path, include
 
 from reservation import views
 from user.views import student_login
+from user import teacherView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('user.urls')),
     path('reservations/', include('reservation.urls')),
     path('payments/', views.payments, name='payments'),
+
+    path('teachers/', teacherView.teachers, name='teachers'),
+    path('teachers/add_teacher/', teacherView.add_teacher, name='add_teacher'),
+    path('teachers/edit/<int:pk>/', teacherView.edit_teacher, name='edit_teacher'),
+    
     path('payments/new/', views.add_payment, name='add_payment'),
     path('payments/edit/<int:pk>/', views.edit_payment, name='edit_payment'),
     path('payments/delete/<int:pk>/', views.delete_payment, name='delete_payment'),

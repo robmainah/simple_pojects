@@ -7,36 +7,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.crypto import get_random_string
 from django.contrib.auth.decorators import login_required
 
-from .forms import RegistrationForm, LoginForm, AddStudentForm
+from .forms import LoginForm, AddStudentForm
 
 from .models import Profile
-
-def register(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-
-        if form.is_valid():
-            data = {
-                'username': form.cleaned_data.get('email'),
-                'email': form.cleaned_data.get('email'),
-                'first_name': form.cleaned_data.get('first_name'),
-                'last_name': form.cleaned_data.get('last_name'),
-                'password': make_password(form.cleaned_data.get('password')),
-                'is_staff': False,
-            }
-
-            user = User.objects.create(**data)
-            form.save(user)
-
-            messages.success(request, 'Registration successful')
-            return redirect('login')    
-    else:
-        if request.user is not None and request.user == 'AnonymousUser':
-            return redirect('reservations')
-
-        form = RegistrationForm()
-
-    return render(request, 'user/register.html', { 'form': form })
 
 def student_login(request):
     if request.method == 'GET':
