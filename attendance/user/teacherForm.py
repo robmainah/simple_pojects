@@ -28,13 +28,6 @@ class AddTeacherForm(forms.ModelForm):
         instance.password = make_password(get_random_string(length=6))
         instance.username = self.cleaned_data.get('email')
         instance.is_staff = True
-        
+
         return super().save()
     
-
-class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
-
-    class Meta:
-        model = User
-        fields = ['username', 'email']

@@ -18,8 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 from reservation import views
-from user.views import student_login
 from user import teacherView
+from attendance import subjectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +31,11 @@ urlpatterns = [
     path('teachers/add_teacher/', teacherView.add_teacher, name='add_teacher'),
     path('teachers/edit/<int:pk>/', teacherView.edit_teacher, name='edit_teacher'),
     path('teachers/delete/<int:pk>/', teacherView.delete_teacher, name='delete_teacher'),
+
+    path('subjects/', subjectView.subjects, name='subjects'),
+    path('subjects/add_subject/', subjectView.add_subject, name='add_subject'),
+    path('subjects/edit/<int:pk>/', subjectView.edit_subject, name='edit_subject'),
+    path('subjects/delete/<int:pk>/', subjectView.delete_subject, name='delete_subject'),
     
     path('payments/new/', views.add_payment, name='add_payment'),
     path('payments/edit/<int:pk>/', views.edit_payment, name='edit_payment'),

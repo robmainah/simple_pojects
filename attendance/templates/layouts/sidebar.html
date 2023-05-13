@@ -38,6 +38,15 @@
                     </li>
                 {% endif %}
 
+                {% if request.user.is_staff %}
+                    <li class="nav-item border-bottom border-info">
+                        <a href="{% url 'subjects' %}" class="nav-link {% if request.path|starts_with:'/subjects/' %} active {% endif %}">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Subjects</p>
+                        </a>
+                    </li>
+                {% endif %}
+
                 {% if request.user.is_superuser %}
                     <li class="nav-item border-bottom border-info">
                         <a href="{% url 'teachers' %}" class="nav-link {% if request.path|starts_with:'/teachers/' %} active {% endif %}">

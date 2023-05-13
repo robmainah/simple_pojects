@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'user',
     'reservation',
+    'attendance',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"

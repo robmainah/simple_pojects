@@ -5,10 +5,8 @@ from django.contrib.auth import authenticate, login
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 
-from .forms import LoginForm, AddStudentForm
+from .forms import LoginForm
 from .teacherForm import AddTeacherForm
-
-from .models import Profile
 
 def student_login(request):
     if request.method == 'GET':
