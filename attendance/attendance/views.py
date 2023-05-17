@@ -9,10 +9,11 @@ from django.contrib.auth.decorators import login_required
 from .form import AttendanceForm
 
 from .models import Attendance
+from user.models import Profile
 
 @login_required
 def attendances(request):
-    attendances_list = Attendance.objects.filter()
+    attendances_list = Attendance.objects.all()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(attendances_list, 10)
@@ -30,6 +31,13 @@ def attendances(request):
 def add_attendance(request):
     if request.method == 'GET':
         form = AttendanceForm()
+        
+        if request.user.is_staff == False:
+            student = User.objects.filter(pk = request.user.pk)[0]
+
+            item = Profile.objects.filter(pk=student.profile.pk)
+
+            form.fields['student'].queryset = item
 
         return render(request, 'attendances/attendance_form.html', { 'form': form })
     else:

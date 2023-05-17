@@ -9,7 +9,7 @@ from .models import Subject
 
 @login_required
 def subjects(request):
-    subjects_list = Subject.objects.filter()
+    subjects_list = Subject.objects.all()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(subjects_list, 10)

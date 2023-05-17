@@ -32,6 +32,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Student Name</th>
+                                        <th>Email</th>
                                         <th>Registration No.</th>
                                         <th>Phone</th>
                                         <th></th>
@@ -42,6 +43,7 @@
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
                                             <td>{{student.first_name }} {{student.last_name }}</td>
+                                            <td>{{student.email }}</td>
                                             <td>{{student.profile.registration_no }}</td>
                                             <td>{{student.profile.phone }}</td>
                                             <td>

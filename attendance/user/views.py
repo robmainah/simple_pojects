@@ -1,9 +1,9 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.utils.crypto import get_random_string
 from django.contrib.auth.decorators import login_required
 
 from .forms import LoginForm, AddStudentForm
@@ -12,8 +12,9 @@ from .models import Profile
 
 def student_login(request):
     if request.method == 'GET':
-        print(request.user)
-        if request.user is not None and request.user == 'AnonymousUser':
+        if request.user is not None and request.user.is_staff == True:
+            return redirect('attendances')
+        elif request.user is not None and request.user == 'AnonymousUser':
             return redirect('attendances')
         
         form = LoginForm()
@@ -25,13 +26,20 @@ def student_login(request):
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
         
-        user = authenticate(request, username=email, password=password)
+        existingUser = User.objects.get(email=email)
+        if existingUser:
+            username = existingUser.username
+        else:
+            username = email
+
+        user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
             return redirect('attendances')
         else:
-            return redirect('login')
+            messages.warning(request, 'Wrong credintials')
+            return render(request, 'user/login.html', { 'form': form })
  
 @login_required
 def students(request):
@@ -59,14 +67,12 @@ def add_student(request):
         form = AddStudentForm(request.POST)
 
         if form.is_valid():
-            form.cleaned_data['password'] = get_random_string(length=6)
-
             data = {
                 'username': form.cleaned_data.get('email'),
                 'email': form.cleaned_data.get('email'),
                 'first_name': form.cleaned_data.get('first_name'),
                 'last_name': form.cleaned_data.get('last_name'),
-                'password': make_password(form.cleaned_data.get('password')),
+                'password': make_password('password'),
                 'is_staff': False,
             }
 
