@@ -17,15 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from reservation import views
 from user import teacherView
 from attendance import subjectView, studentClassView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('user.urls')),
-    path('reservations/', include('reservation.urls')),
-    path('payments/', views.payments, name='payments'),
 
     path('teachers/', teacherView.teachers, name='teachers'),
     path('teachers/add_teacher/', teacherView.add_teacher, name='add_teacher'),
@@ -42,10 +39,5 @@ urlpatterns = [
     path('student_classes/edit/<int:pk>/', studentClassView.edit_student_class, name='edit_student_class'),
     path('student_classes/delete/<int:pk>/', studentClassView.delete_student_class, name='delete_student_class'),
     
-    path('payments/new/', views.add_payment, name='add_payment'),
-    path('payments/edit/<int:pk>/', views.edit_payment, name='edit_payment'),
-    path('payments/delete/<int:pk>/', views.delete_payment, name='delete_payment'),
-
-    path('', views.all_reservations, name='main'),
     path('attendances/', include('attendance.urls'), name='main'),
 ]
