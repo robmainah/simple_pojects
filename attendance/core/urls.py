@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 from user import teacherView
 from attendance import subjectView, studentClassView
@@ -40,4 +41,5 @@ urlpatterns = [
     path('student_classes/delete/<int:pk>/', studentClassView.delete_student_class, name='delete_student_class'),
     
     path('attendances/', include('attendance.urls'), name='main'),
+    path('', RedirectView.as_view(url='attendances'), name='home'),
 ]
