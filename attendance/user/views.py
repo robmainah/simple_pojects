@@ -26,7 +26,7 @@ def student_login(request):
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
         
-        existingUser = User.objects.get(email=email)
+        existingUser = User.objects.filter(email=email).first()
         if existingUser:
             username = existingUser.username
         else:
@@ -40,6 +40,9 @@ def student_login(request):
         else:
             messages.warning(request, 'Wrong credintials')
             return render(request, 'user/login.html', { 'form': form })
+    else:
+        messages.warning(request, 'Wrong credintials')
+        return render(request, 'user/login.html', { 'form': form })
  
 @login_required
 def students(request):
