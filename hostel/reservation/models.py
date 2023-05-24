@@ -1,14 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-class Room(models.Model):
-    room_no = models.IntegerField(unique=True)
-    has_empty = models.BooleanField(default=True)
-    amount = models.FloatField(default=0)
-
-    def __str__(self) -> str:
-        return str(self.room_no)
-    
+from room.models import Room    
 
 class Reservation(models.Model):
     user = models.ForeignKey(User, related_name='reservations', on_delete=models.CASCADE)

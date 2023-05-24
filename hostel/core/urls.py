@@ -22,8 +22,9 @@ from user.views import student_login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', include('user.urls')),
-    path('reservations/', include('reservation.urls')),
+    path('users/', include('user.urls'), name='users'),
+    path('reservations/', include('reservation.urls'), name='reservations'),
+    path('rooms/', include('room.urls'), name='rooms'),
     path('payments/', views.payments, name='payments'),
     path('payments/new/', views.add_payment, name='add_payment'),
     path('payments/edit/<int:pk>/', views.edit_payment, name='edit_payment'),

@@ -4,8 +4,10 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 
-from .models import Reservation, Room, Payment
+from .models import Reservation, Payment
 from .forms import AddReservationForm, AddPaymentForm
+
+from room.models import Room
 
 @login_required
 def all_reservations(request):
@@ -79,7 +81,7 @@ def edit_reservation(request, pk):
             messages.warning(request, 'Please fill all fields')
             context['form'] = request.POST
             
-            return render(request, 'reservations/reservation_form.html', { 'context': context })
+            return render(request, 'reservations/reservation_form.html', { 'context': context, 'id': reservation.pk })
     else:
         context['form'] = {
             'user': reservation.user.id,
@@ -87,7 +89,7 @@ def edit_reservation(request, pk):
             'is_active': reservation.is_active,
         }
 
-        return render(request, 'reservations/reservation_form.html', { 'context': context })
+        return render(request, 'reservations/reservation_form.html', { 'context': context, 'id': reservation.pk })
 
 
 @login_required

@@ -40,7 +40,6 @@ def register(request):
 
 def student_login(request):
     if request.method == 'GET':
-        print(request.user)
         if request.user is not None and request.user == 'AnonymousUser':
             return redirect('reservations')
         

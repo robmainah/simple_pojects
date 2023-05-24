@@ -2,36 +2,43 @@
 
 {% load reservation_template_tags %}
 
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #197146;">
     <div class="sidebar">
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 <img src="{% static '/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">{{ request.user.first_name }} {{ request.user.last_name }}</a>
             </div>
-        </div>
+        </div> -->
 
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item border-bottom border-info">
-                    <a href="{% url 'reservations' %}" class="nav-link {% if request.path|starts_with:'/reservations/' %} active {% endif %}">
+                    <a href="{% url 'rooms' %}" class="nav-link text-white {% if request.path|starts_with:'/rooms/' %} active {% endif %}">
+                    
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Rooms</p>
+                    </a>
+                </li>
+                <li class="nav-item border-bottom border-info">
+                    <a href="{% url 'reservations' %}" class="nav-link text-white {% if request.path|starts_with:'/reservations/' %} active {% endif %}">
                     
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Reservations</p>
                     </a>
                 </li>
                 <li class="nav-item border-bottom border-info">
-                    <a href="{% url 'payments' %}" class="nav-link {% if request.path|starts_with:'/payments/' %} active {% endif %}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <a href="{% url 'payments' %}" class="nav-link text-white {% if request.path|starts_with:'/payments/' %} active {% endif %}">
+                        <i class="nav-icon fas fa-money-bill-wave"></i>
                         <p>Payments</p>
                     </a>
                 </li>
 
                 {% if request.user.is_staff %}
                     <li class="nav-item border-bottom border-info">
-                        <a href="{% url 'students' %}" class="nav-link {% if request.path|starts_with:'/users/students/' %} active {% endif %}">
+                        <a href="{% url 'students' %}" class="nav-link text-white {% if request.path|starts_with:'/users/students/' %} active {% endif %}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>Students</p>
                         </a>
@@ -39,7 +46,7 @@
                 {% endif %}
                 
                 <li class="nav-item border-bottom border-info">
-                    <a href="{% url 'logout' %}" class="nav-link">
+                    <a href="{% url 'logout' %}" class="nav-link text-white">
                         <i class="nav-icon fas fa-users"></i>
                         <p>logout</p>
                     </a>

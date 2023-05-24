@@ -28,7 +28,7 @@
             <div class="col-lg-12">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h5 class="m-0">{% if id %} Edit {% else %} Add {% endif %} Payment</h5>
+                        <h5 class="m-0">{% if id %} Edit {% else %} Add {% endif %} Room</h5>
                     </div>
                     <div class="card-body">
                         {% if messages %}
@@ -40,9 +40,9 @@
                         {% endif %}
 
                         {% if id %}
-                            <form action="{% url 'edit_payment' id %}" method="post">
+                            <form action="{% url 'edit_room' id %}" method="post">
                         {% else %}
-                            <form action="{% url 'add_payment' %}" method="post">
+                            <form action="{% url 'add_room' %}" method="post">
                         {% endif %}
                             {% csrf_token %}
 
